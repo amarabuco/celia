@@ -2,7 +2,11 @@
 
 Qualquer semelhança com o robô ALICE é mera coincidência...
 
-Módulos Core
+## Por que CELIA?
+
+> Porque CELIA não é ALICE.
+
+## Módulos Core
 
 1 - Análise
 
@@ -20,7 +24,7 @@ Permite registrar informações e documentos utilizados para o treinamento dos a
 
 Permite classificar documentos, identificar irregularidades e potencial de risco da contratação.
 
-Módulos Auxiliares
+## Módulos Auxiliares
 
 1 - Autenticação
 
