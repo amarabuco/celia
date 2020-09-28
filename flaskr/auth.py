@@ -1,4 +1,5 @@
 import functools
+import datetime
 
 from flask import (
     Blueprint, flash, g, redirect, render_template, request, session, url_for
@@ -42,6 +43,8 @@ def register():
 
 @bp.route('/login', methods=('GET', 'POST'))
 def login():
+    g.time = datetime.datetime.now()
+
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
@@ -82,6 +85,7 @@ def load_logged_in_user():
 def logout():
     session.clear()
     return redirect(url_for('index'))
+
 
 def login_required(view):
     @functools.wraps(view)

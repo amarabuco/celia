@@ -1,11 +1,30 @@
-{% extends 'base.html' %} {% block header %}
-<h1>{% block title %}Log In{% endblock %}</h1>
+{% extends 'menu.html' %} {% block header %}
+<div class="alert alert-warning">
+  <h3>CELIA <i class="fas fa-robot"></i></h3>
+
+  <small>Contratos e Licitações Análises </small>
+</div>
+<h1>{% block title %}Login{% endblock %}</h1>
 {% endblock %} {% block content %}
 <form method="post">
-  <label for="username">Username</label>
-  <input name="username" id="username" required />
-  <label for="password">Password</label>
-  <input type="password" name="password" id="password" required />
-  <input type="submit" value="Log In" />
+  <div class="form-group">
+    <p>
+      <label for="username">Usuário</label>
+      <input class="form-control" name="username" id="username" required />
+    </p>
+    <p>
+      <label for="password">Senha</label>
+      <input
+        class="form-control"
+        type="password"
+        name="password"
+        id="password"
+        required
+      />
+    </p>
+    <p>
+      <input class="form-control btn btn-success" type="submit" value="Login" />
+    </p>
+  </div>
 </form>
 {% endblock %}
