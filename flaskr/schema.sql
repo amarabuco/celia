@@ -4,7 +4,18 @@ DROP TABLE IF EXISTS doc;
 CREATE TABLE user (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   username TEXT UNIQUE NOT NULL,
+  name TEXT NOT NULL,
   password TEXT NOT NULL
+);
+
+CREATE TABLE usuario (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  nome TEXT UNIQUE NOT NULL,
+  email TEXT NOT NULL,
+  telefone TEXT,
+  orgao INTEGER,
+  cargo TEXT,
+  password TEXT NOT NULL,
 );
 
 CREATE TABLE doc (
@@ -14,4 +25,36 @@ CREATE TABLE doc (
   title TEXT NOT NULL,
   body TEXT NOT NULL,
   FOREIGN KEY (author_id) REFERENCES user (id)
+);
+
+CREATE TABLE documento (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  usuario INTEGER NOT NULL,
+  orgao INTEGER NOT NULL,
+  organizacao INTEGER NOT NULL,
+  created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  titulo TEXT NOT NULL,
+  conteudo TEXT NOT NULL,
+  FOREIGN KEY (usuario) REFERENCES usuario (id)
+);
+
+CREATE TABLE orgao (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  nome TEXT NOT NULL,
+  superior TEXT NOT NULL,
+  esfera TEXT NOT NULL,
+  FOREIGN KEY (esfera) REFERENCES esfera (id)
+);
+
+CREATE TABLE esfera (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  nome TEXT NOT NULL,
+  FOREIGN KEY (author_id) REFERENCES user (id)
+);
+
+CREATE TABLE organizacao (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  razao_social TEXT NOT NULL,
+  nome fantasia TEXT NOT NULL,
+  cpf/cnpj TEXT NOT NULL
 );

@@ -43,7 +43,8 @@ def register():
 
 @bp.route('/login', methods=('GET', 'POST'))
 def login():
-    g.time = datetime.datetime.now()
+    g.time = datetime.datetime.now().strftime("%d/%m/%y %H:%M:%S")
+    g.ip = request.remote_addr
 
     if request.method == 'POST':
         username = request.form['username']

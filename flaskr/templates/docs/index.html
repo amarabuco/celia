@@ -2,6 +2,7 @@
 <h1>{% block title %}Docs{% endblock %}</h1>
 {% if g.user %}
 <a class="action" href="{{ url_for('docs.create') }}">New</a>
+
 {% endif %} {% endblock %} {% block content %} {% for doc in docs %}
 <article class="doc">
   <header>
