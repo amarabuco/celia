@@ -27,13 +27,13 @@ CREATE TABLE doc (
   FOREIGN KEY (author_id) REFERENCES user (id)
 );
 
-CREATE TABLE documento (
+CREATE TABLE arquivo (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   usuario INTEGER NOT NULL,
   orgao INTEGER NOT NULL,
   organizacao INTEGER NOT NULL,
   created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  titulo TEXT NOT NULL,
+  nome TEXT NOT NULL,
   conteudo TEXT NOT NULL,
   FOREIGN KEY (usuario) REFERENCES usuario (id)
 );

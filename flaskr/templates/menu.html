@@ -1,26 +1,41 @@
-{% extends 'base.html' %} {% block menu %}
-{% if g.user %}
-    <div class="dropdown">
-        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <i class="fas fa-bars"></i>
-        </button>
-    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-        <a class="dropdown-item" href="{{ url_for('docs.create') }}">Novo Documento</a>
-        <a class="dropdown-item" href="{{ url_for('docs.upload') }}">Enviar Documento</a>
-        <a class="dropdown-item" href="{{ url_for('auth.logout') }}">
-            <i class="fas fa-sign-out-alt"></i> Logout
-        </a>
-    </div>
-                  </div>
-                </div>
-          {% else %}
+{% extends 'base.html' %} {% block menu %} {% if g.user %}
+<p>
+<div class="dropdown">
+  <button
+    class="btn btn-default dropdown-toggle"
+    type="button"
+    id="dropdownMenuButton"
+    data-toggle="dropdown"
+    aria-haspopup="true"
+    aria-expanded="false"
+  >
+    <i class="fas fa-bars"></i>
+  </button>
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+    <a class="dropdown-item" href="{{ url_for('docs.create') }}"
+      >Novo Documento</a
+    >
+    <a class="dropdown-item" href="{{ url_for('docs.upload') }}"
+      >Enviar Documento</a
+    >
+    <a class="dropdown-item" href="{{ url_for('auth.logout') }}">
+      <i class="fas fa-sign-out-alt"></i> Logout
+    </a>
+  </div>
+</div>
+</p>
 
-    <div class="alert alert-primary d-flex flex-row-reverse" aria-labelledby="dropdownMenuButton">
-        <a class="p-2 bd-highlight" href="{{ url_for('auth.register') }}"><i class="fas fa-user"></i> Cadastro</a>
-        <a class="p-2 bd-highlight" href="{{ url_for('auth.login') }}"><i class="fas fa-sign-in-alt"></i> Login</a>
-    </div>
-            {% endif %}
+{% else %}
 
-   
-
-{% endblock %}
+<div
+  class="alert alert-primary d-flex flex-row-reverse"
+  aria-labelledby="dropdownMenuButton"
+>
+  <a class="p-2 bd-highlight" href="{{ url_for('auth.register') }}"
+    ><i class="fas fa-user"></i> Cadastro</a
+  >
+  <a class="p-2 bd-highlight" href="{{ url_for('auth.login') }}"
+    ><i class="fas fa-sign-in-alt"></i> Login</a
+  >
+</div>
+{% endif %} {% endblock %}

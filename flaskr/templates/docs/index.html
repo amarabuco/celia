@@ -1,23 +1,135 @@
 {% extends 'menu.html' %} {% block header %}
+
 <h1>{% block title %}Docs{% endblock %}</h1>
 {% if g.user %}
 <a class="action" href="{{ url_for('docs.create') }}">New</a>
+<div class="content">
+  {% endif %} {% endblock %} {% block content %}
+  <div class="table-responsive">
+    <table
+      id="tabela"
+      class="table table-striped table-borderless table-hover table-sm responsive"
+    >
+      <thead>
+        <tr>
+          <th>título</th>
+          <th>conteúdo</th>
+          <th>usuário</th>
+          <th>data</th>
+          <th>ação</th>
+        </tr>
+      </thead>
+      <tfoot>
+        <tr>
+          <th>título</th>
+          <th>conteúdo</th>
+          <th>usuário</th>
+          <th>data</th>
+          <th>ação</th>
+        </tr>
+      </tfoot>
+      <tbody>
+        {% for doc in docs %}
+        <tr>
+          <td>{{ doc["title"] }}</td>
+          <td>{{ doc["body"] }}</td>
+          <td>{{ doc["author_id"] }}</td>
+          <td>{{ doc["created"] }}</td>
+          <td>
+            <a class="action" href="{{ url_for('docs.update', id=doc['id']) }}"
+              ><span class="fas fa-sign-out-alt btn btn-warning"></span
+            ></a>
+            <a class="action" href="{{ url_for('docs.update', id=doc['id']) }}"
+              ><span class="fas fa-search btn btn-primary"></span
+            ></a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
 
-{% endif %} {% endblock %} {% block content %} {% for doc in docs %}
-<article class="doc">
-  <header>
-    <div>
-      <h1>{{ doc["title"] }}</h1>
-      <div class="about">
-        by {{ doc["username"] }} on {{ doc["created"].strftime("%Y-%m-%d") }}
-      </div>
-    </div>
-    {% if g.user['id'] == doc['author_id'] %}
-    <a class="action" href="{{ url_for('docs.update', id=doc['id']) }}">Edit</a>
-    {% endif %}
-  </header>
-  <p class="body">{{ doc["body"] }}</p>
-</article>
-{% if not loop.last %}
-<hr />
-{% endif %} {% endfor %} {% endblock %}
+<script>
+  $(document).ready(function() {
+    $(".bg-danger").click(function() {
+      if (!confirm("Deseja apagar?")) {
+        return false;
+      }
+    });
+
+    $(".bg-info").click(function() {
+      if (!confirm("Deseja clonar?")) {
+        return false;
+      }
+    });
+
+    $("#tabela").DataTable({
+      order: [[2, "desc"]],
+      colReorder: true,
+      //"scrollY": 500,
+      //"deferRender": true,
+      //"scroller": true,
+      //"serverside":true,
+      dom: "Bfrtip",
+      stateSave: true,
+      stateDuration: 0,
+      stateSaveCallback: function(settings, data) {
+        localStorage.setItem(
+          "DataTables_" + settings.sInstance,
+          JSON.stringify(data)
+        );
+      },
+      stateLoadCallback: function(settings) {
+        return JSON.parse(
+          localStorage.getItem("DataTables_" + settings.sInstance)
+        );
+      },
+      columnDefs: [
+        {
+          targets: 1,
+          className: "noVis"
+        }
+      ],
+      lengthMenu: [
+        [10, 25, 50, 9999],
+        ["10 linhas", "25 linhas", "50 linhas", "Todas linhas"]
+      ],
+      buttons: [
+        {
+          extend: "colvis",
+          columns: ":not(.noVis)",
+          text: "Editar Colunas"
+        },
+        {
+          extend: "collection",
+          text: "Exportar",
+          buttons: ["copy", "csv", "excel", "pdf", "print"]
+        },
+        {
+          extend: "pageLength",
+          text: "Mostrar linhas",
+          background: false
+        }
+      ],
+
+      language: {
+        lengthMenu: "Exibir _MENU_ registros por página",
+        zeroRecords: "Nada foi encontrado",
+        search: "Busca:",
+        info: "Mostrando _START_ até _END_ do _TOTAL_ registros",
+        infoEmpty: "Sem registros",
+        infoFiltered: "(filtrado de _MAX_ registros)",
+        paginate: {
+          first: "Primeiro",
+          last: "Última",
+          next: "Próxima",
+          previous: "Anterior"
+        },
+        thousands: ".",
+        decimal: ","
+      }
+    });
+  });
+</script>
+{% endblock %}

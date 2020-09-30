@@ -1,0 +1,14 @@
+{% extends 'menu.html' %} {% block header %}
+<h1>{% block title %}Novo Arquivo{% endblock %}</h1>
+{% endblock %} {% block content %}
+<form method=post enctype=multipart/form-data>
+    <div class="form-group">
+            <p>
+    <input class="form-control" type=file name=file>
+            </p>
+    <p>
+        <input class="form-control btn btn-success" type=submit value=Upload>
+    </p>
+</div>
+  </form>
+{% endblock %}

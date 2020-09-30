@@ -13,15 +13,16 @@ from flaskr.db import get_db
 
 bp = Blueprint('docs', __name__)
 
+
 @bp.route('/')
 def index():
     db = get_db()
-    doc = db.execute(
+    docs = db.execute(
         'SELECT p.id, title, body, created, author_id, username'
         ' FROM doc p JOIN user u ON p.author_id = u.id'
         ' ORDER BY created DESC'
     ).fetchall()
-    return render_template('docs/index.html', docs=doc)
+    return render_template('docs/index.html', docs=docs)
 
 
 @bp.route('/create', methods=('GET', 'POST'))
@@ -126,20 +127,22 @@ def upload():
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file.save(os.path.join(UPLOAD_FOLDER, filename))
+            db = get_db()
+            db.execute(
+                'INSERT INTO doc (title, body, author_id)'
+                ' VALUES (?, ?, ?)',
+                (filename, 'body', g.user['id'])
+            )
+            db.commit()
             return redirect(url_for('docs.uploaded_file',
                                     filename=filename))
-    return '''
-    <!doctype html>
-    <title>Upload new File</title>
-    <h1>Upload new File</h1>
-    <form method=post enctype=multipart/form-data>
-      <input type=file name=file>
-      <input type=submit value=Upload>
-    </form>
-    '''
+    return render_template('docs/upload.html')
 
 
 @bp.route('/uploads/<filename>')
 def uploaded_file(filename):
     return send_from_directory(os.path.abspath(UPLOAD_FOLDER), filename)
-    
+
+@bp.route('/analise/<filename>')
+def analise(filename):
+    return send_from_directory(os.path.abspath(UPLOAD_FOLDER), filename)
