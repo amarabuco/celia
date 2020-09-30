@@ -1,5 +1,8 @@
 import os
 import textract
+import re
+from collections import Counter, OrderedDict
+from operator import itemgetter, attrgetter
 
 from flask import (
     Flask, Blueprint, flash, g, redirect, render_template, request, url_for, send_from_directory, send_file
@@ -156,5 +159,14 @@ def file2text(filename):
 @bp.route('/<int:id>/analise')
 def analise(id):
     doc = get_doc(id)
-    text = doc['body']
-    return send_from_directory(os.path.abspath(UPLOAD_FOLDER), filename)
+    text = doc['body'].decode()
+    linhas = str.splitlines(text)
+    data = dict()
+    data['num_linhas'] = len(linhas)
+    pattern = re.compile("clausula")
+    clausulas = {linha: number for number, linha in enumerate(
+        linhas) if pattern.match(linha.lower())}
+    clausulas = OrderedDict(clausulas)
+    values = list(clausulas.values())
+
+    return render_template('docs/analise.html', data=data, clausulas=clausulas, values=values, linhas=linhas)

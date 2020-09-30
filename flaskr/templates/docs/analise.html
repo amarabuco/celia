@@ -1,0 +1,30 @@
+{% extends 'menu.html' %} {% block header %}
+<h1>{% block title %}Análise{% endblock %}</h1>
+{% endblock %} {% block content %}
+<h3></h3>
+<div></div>
+<h3>Palavras</h3>
+<div>
+  
+   
+  </table>
+</div>
+
+
+<h3>Cláusulas</h3>
+<table class="table-striped">
+{% for clausula in clausulas.items() %}
+    <tr>
+        <td><a role="button" aria-expanded="false" aria-controls="{{ clausula[1] }}" data-toggle="collapse" href="#{{ clausula[1] }}" >{{ clausula[0] }} </a></td>
+        <td>{{ clausula[1]  }}</td>
+        {% if loop.last %}
+        <td ><div class="collapse multi-collapse" id="{{ clausula[1] }}">{{ linhas[clausula[1]:linhas|length] | join(' ')  }}</div></td>
+        {% else %}
+        <td><div class="collapse multi-collapse" id="{{ clausula[1] }}"></div>{{ linhas[clausula[1]:loop.nextitem[1]] | join(' ')   }}</div></td>
+        {% endif %}
+
+    </tr>
+
+{% endfor %}
+</table>
+ {% endblock %}
