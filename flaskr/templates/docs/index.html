@@ -39,9 +39,26 @@
             <a class="action" href="{{ url_for('docs.update', id=doc['id']) }}"
               ><span class="fas fa-sign-out-alt btn btn-warning"></span
             ></a>
-            <a class="action" href="{{ url_for('docs.update', id=doc['id']) }}"
+            <a
+              class="action"
+              href="{{ url_for('docs.uploaded_file', filename=doc['title']) }}"
               ><span class="fas fa-search btn btn-primary"></span
             ></a>
+            <a
+            class="action"
+            href="{{ url_for('docs.analise', id=doc['id']) }}"
+            ><span class="fas fa-search btn btn-success"></span
+          ></a>
+            <form action="{{ url_for('docs.delete', id=doc['id']) }}" method="post">
+                <input
+                  class="btn btn-danger"
+                  type="submit"
+                  value="Delete"
+                  onclick="return confirm('Are you sure?');"
+                />
+            </form>
+              </div>
+
           </td>
         </tr>
         {% endfor %}

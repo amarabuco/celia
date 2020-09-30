@@ -1,29 +1,33 @@
 {% extends 'base.html' %} {% block header %}
-<h1>{% block title %}Edit "{{ post["title"] }}"{% endblock %}</h1>
+<h1>{% block title %}Edit "{{ doc["title"] }}"{% endblock %}</h1>
 {% endblock %} {% block content %}
 <form method="post">
+    <div class="form-group">
   <label for="title">Title</label>
   <input
     name="title"
     id="title"
-    value="{{ request.form['title'] or post['title'] }}"
+    class="form-control"
+    value="{{ request.form['title'] or doc['title'] }}"
     required
   />
   <label for="body">Body</label>
   <textarea
+  class="form-control"
     name="body"
     id="body"
-    >{{ request.form['body'] or post['body'] }}</textarea
+    >{{ request.form['body'] or doc['body'] }}</textarea
   >
-  <input type="submit" value="Save" />
+  <input class="btn btn-success" type="submit" value="Save" />
 </form>
 <hr />
-<form action="{{ url_for('blog.delete', id=post['id']) }}" method="post">
+<form action="{{ url_for('docs.delete', id=doc['id']) }}" method="post">
   <input
-    class="danger"
+    class="btn btn-danger"
     type="submit"
     value="Delete"
     onclick="return confirm('Are you sure?');"
   />
+</div>
 </form>
 {% endblock %}

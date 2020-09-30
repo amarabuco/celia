@@ -1,4 +1,5 @@
 import os
+import textract
 
 from flask import (
     Flask, Blueprint, flash, g, redirect, render_template, request, url_for, send_from_directory, send_file
@@ -127,11 +128,12 @@ def upload():
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file.save(os.path.join(UPLOAD_FOLDER, filename))
+            body = file2text(filename)
             db = get_db()
             db.execute(
                 'INSERT INTO doc (title, body, author_id)'
                 ' VALUES (?, ?, ?)',
-                (filename, 'body', g.user['id'])
+                (filename, body, g.user['id'])
             )
             db.commit()
             return redirect(url_for('docs.uploaded_file',
@@ -143,6 +145,16 @@ def upload():
 def uploaded_file(filename):
     return send_from_directory(os.path.abspath(UPLOAD_FOLDER), filename)
 
-@bp.route('/analise/<filename>')
-def analise(filename):
+
+@bp.route('/convert/<filename>')
+def file2text(filename):
+    text = textract.process(os.path.join(
+        UPLOAD_FOLDER, filename), method="tesseract")
+    return text
+
+
+@bp.route('/<int:id>/analise')
+def analise(id):
+    doc = get_doc(id)
+    text = doc['body']
     return send_from_directory(os.path.abspath(UPLOAD_FOLDER), filename)
