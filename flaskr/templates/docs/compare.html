@@ -1,0 +1,27 @@
+{% extends 'menu.html' %} {% block header %} {% endblock %} {% block content %}
+<h1>{% block title %}Compare{% endblock %}</h1>
+{% if docs %}
+<form method="post">
+  <div class="form-group">
+    <select name="doc1" id="doc1">
+      {% for doc in docs %}
+      <option value="{{ doc['id'] }}">{{ doc["title"] }}</option>
+      {% endfor %}
+    </select>
+    <select name="doc2" id="doc2">
+      {% for doc in docs %}
+      <option value="{{ doc['id'] }}">{{ doc["title"] }}</option>
+      {% endfor %}
+    </select>
+    <p>
+      <input
+        class="form-control btn btn-success"
+        type="submit"
+        value="Comparar"
+      />
+    </p>
+  </div>
+</form>
+{% endif %}{% if result %}
+{{ result | safe }}
+{% endif %} {% endblock %}

@@ -16,8 +16,9 @@
       >Novo Documento</a
     >
     <a class="dropdown-item" href="{{ url_for('docs.upload') }}"
-      >Enviar Documento</a
-    >
+      >Enviar Documento</a>
+    <a class="dropdown-item" href="{{ url_for('docs.compare') }}"
+      >Comparar Documentos</a>
     <a class="dropdown-item" href="{{ url_for('auth.logout') }}">
       <i class="fas fa-sign-out-alt"></i> Logout
     </a>

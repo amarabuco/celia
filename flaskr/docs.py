@@ -1,6 +1,7 @@
 import os
 import textract
 import re
+from difflib import Differ, SequenceMatcher, HtmlDiff
 from collections import Counter, OrderedDict
 from operator import itemgetter, attrgetter
 
@@ -170,3 +171,39 @@ def analise(id):
     values = list(clausulas.values())
 
     return render_template('docs/analise.html', data=data, clausulas=clausulas, values=values, linhas=linhas)
+
+
+@bp.route('/compare', methods=('GET', 'POST'))
+@login_required
+def compare():
+    if request.method == 'POST':
+        doc1 = int(request.form['doc1'])
+        doc2 = int(request.form['doc2'])
+
+        result = diff(doc1, doc2)
+
+        return render_template('docs/compare.html', result=result)
+
+    db = get_db()
+    docs = db.execute(
+        'SELECT p.id, title, body, created, author_id, username'
+        ' FROM doc p JOIN user u ON p.author_id = u.id'
+        ' ORDER BY created DESC'
+    ).fetchall()
+
+    return render_template('docs/compare.html', docs=docs)
+
+
+def diff(doc1, doc2):
+    text1 = get_doc(doc1)['body']
+    text2 = get_doc(doc2)['body']
+    lines1 = str(get_doc(doc1)['body']).splitlines(keepends=True)
+    lines2 = str(get_doc(doc2)['body']).splitlines(keepends=True)
+
+    d = Differ()
+    #d = HtmlDiff()
+    result = list(d.compare(lines1, lines2))
+    #result = d.make_table(lines1, lines2)
+    #result = SequenceMatcher(None, text1, text2).ratio()
+
+    return result
